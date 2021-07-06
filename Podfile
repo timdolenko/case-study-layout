@@ -9,6 +9,11 @@ target 'CampaignBrowser' do
     pod 'SnapKit', '~> 5.0.0'
 end
 
+target 'CampaignBrowserTests' do
+  pod 'RxSwift', '= 5.1.1'
+  pod 'SnapshotTesting', '~> 1.9.0'
+end
+
 post_install do |installer|
     installer.pods_project.targets.each do |target|
         if ['MapleBacon'].include? target.name
