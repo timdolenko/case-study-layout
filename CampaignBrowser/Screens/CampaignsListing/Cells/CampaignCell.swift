@@ -5,15 +5,22 @@ import SnapKit
 /**
  Style structure that may be used throughout the project to share styling variables.
  */
-fileprivate struct Style {
+struct Style {
     struct Font {
-        let title = UIFont(name: "Helvetica Neue Bold", size: 18)
-        let subtitle = UIFont(name: "Hoefler Text", size: 12)
+        let title = UIFont(name: "Helvetica Neue Bold", size: 18)!
+        let subtitle = UIFont(name: "Hoefler Text", size: 12)!
     }
     let font = Font()
+    let campaignCell = CampaignCellStyle()
 }
 
-fileprivate var style = Style()
+var style = Style()
+
+struct CampaignCellStyle {
+    let imageViewAspectRatio: CGFloat = 4.0 / 3
+    let labelInterlinePadding: CGFloat = 8
+    let labelHorizontalPadding: CGFloat = 8
+}
 
 /**
  The cell which displays a campaign.
@@ -68,6 +75,10 @@ class CampaignCell: UICollectionViewCell {
 
 private extension CampaignCell {
     
+    var cellStyle: CampaignCellStyle {
+        CampaignBrowser.style.campaignCell
+    }
+    
     func setupView() {
         setupImageView()
         setupTitleLabel()
@@ -78,7 +89,7 @@ private extension CampaignCell {
         let v = UIImageView()
         contentView.addSubview(v)
         
-        let aspectRatio: CGFloat = 4.0 / 3
+        let aspectRatio: CGFloat = cellStyle.imageViewAspectRatio
         
         v.snp.makeConstraints { make in
             make.left.equalToSuperview()
@@ -98,8 +109,8 @@ private extension CampaignCell {
         
         l.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom)
-            make.left.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-8)
+            make.left.equalToSuperview().offset(cellStyle.labelHorizontalPadding)
+            make.right.equalToSuperview().offset(-cellStyle.labelHorizontalPadding)
         }
         
         l.font = style.font.title
@@ -114,9 +125,9 @@ private extension CampaignCell {
         contentView.addSubview(l)
         
         l.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
-            make.left.equalToSuperview().offset(8)
-            make.right.equalToSuperview().offset(-8)
+            make.top.equalTo(nameLabel.snp.bottom).offset(cellStyle.labelInterlinePadding)
+            make.left.equalToSuperview().offset(cellStyle.labelHorizontalPadding)
+            make.right.equalToSuperview().offset(-cellStyle.labelHorizontalPadding)
         }
         
         l.font = style.font.subtitle
